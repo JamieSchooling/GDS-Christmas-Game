@@ -1,3 +1,4 @@
+using Unity.Netcode;
 using UnityEngine;
 
 
@@ -6,7 +7,7 @@ namespace GDS
     /// <summary>
     /// Controls the movement of a player character.
     /// </summary>
-    public class PlayerMovement : MonoBehaviour
+    public class PlayerMovement : NetworkBehaviour
     {
         [SerializeField] private float m_MoveSpeed = 3.0f;
 
@@ -21,6 +22,8 @@ namespace GDS
         // Update is called once per frame
         private void Update()
         {
+            if (!IsOwner) return;
+
             transform.position += m_MoveSpeed * Time.deltaTime * (Vector3)m_Input.Player.Move.ReadValue<Vector2>();
         }
     }
