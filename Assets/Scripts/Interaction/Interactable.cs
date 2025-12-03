@@ -8,14 +8,14 @@ namespace GDS
     /// </summary>
     public class Interactable : MonoBehaviour
     {
-        public UnityEvent OnInteract;
+        public UnityEvent<GameObject> OnInteract;
 
         /// <summary>
         /// Triggers the OnInteract event
         /// </summary>
-        public void Interact()
+        public void Interact(GameObject gameObject)
         {
-            OnInteract?.Invoke();
+            OnInteract?.Invoke(gameObject);
         }
     }
 }

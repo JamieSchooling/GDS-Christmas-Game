@@ -29,7 +29,7 @@ namespace GDS
             if (collider.TryGetComponent(out Interactable interactable)
                 && m_Input.Player.Interact.WasPressedThisFrame())
             {
-                interactable.Interact();
+                interactable.Interact(gameObject);
             }
         }
 
