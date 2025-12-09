@@ -1,3 +1,5 @@
+using GDS;
+using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
@@ -5,18 +7,22 @@ using UnityEngine.UI;
 public class NetworkManagerUI : MonoBehaviour
 {
     [SerializeField] private Button m_HostButton;
-    [SerializeField] private Button m_ClientButton;
+    [SerializeField] private Button m_JoinButton;
+    [SerializeField] private TMP_InputField m_JoinCodeField;
+    [SerializeField] private TextMeshProUGUI m_JoinCodeDisplay;
+    [SerializeField] private Relay m_Relay;
 
     private void Awake()
     {
-        m_HostButton.onClick.AddListener(() =>
+        m_HostButton.onClick.AddListener(async () =>
         {
-            NetworkManager.Singleton.StartHost();
+            m_JoinCodeDisplay.text = "Creating...";
+            m_JoinCodeDisplay.text = await m_Relay.CreateRelay();
         });
 
-        m_ClientButton.onClick.AddListener(() =>
+        m_JoinButton.onClick.AddListener(() =>
         {
-            NetworkManager.Singleton.StartClient();
+            m_Relay.JoinRelay(m_JoinCodeField.text);
         });
     }
 }
