@@ -6,9 +6,23 @@ namespace GDS
 {
     public class PickUp : NetworkBehaviour
     {
-        public void Attach(GameObject gameObject)
+        public void Attach(NetworkObject target)
         {
-            transform.SetParent(gameObject.transform);
+            if (target == null)
+                return;
+
+            NetworkObjectReference targetRef = target;
+
+            AttachRpc(targetRef);
+        }
+
+        [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+        private void AttachRpc(NetworkObjectReference targetRef)
+        {
+            if (!targetRef.TryGet(out NetworkObject target))
+                return;
+
+            NetworkObject.TrySetParent(target);
         }
     }
 }

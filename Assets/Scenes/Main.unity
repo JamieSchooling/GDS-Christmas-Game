@@ -797,9 +797,9 @@ GameObject:
   m_Component:
   - component: {fileID: 772032022}
   - component: {fileID: 772032021}
+  - component: {fileID: 772032024}
   - component: {fileID: 772032020}
   - component: {fileID: 772032023}
-  - component: {fileID: 772032024}
   - component: {fileID: 772032025}
   - component: {fileID: 772032026}
   m_Layer: 0
@@ -821,6 +821,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6e7953febb79b04f8d1d30fc328a89d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
   OnInteract:
     m_PersistentCalls:
       m_Calls:
@@ -966,7 +967,7 @@ MonoBehaviour:
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
   SyncOwnerTransformWhenParented: 1
-  AllowOwnerToParent: 0
+  AllowOwnerToParent: 1
 --- !u!114 &772032025
 MonoBehaviour:
   m_ObjectHideFlags: 0

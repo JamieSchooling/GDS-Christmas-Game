@@ -1,3 +1,4 @@
+using Unity.Netcode;
 using UnityEngine;
 
 namespace GDS
@@ -7,7 +8,8 @@ namespace GDS
     /// </summary>
     /// <remarks>Detects objects within a radius, filtered by a <see cref="LayerMask"/>. When an <see cref="Interactable"/> is detected
     /// and the interact button is pressed, the object is interacted with.</remarks>
-    public class Interactor : MonoBehaviour
+    [RequireComponent(typeof(NetworkObject))]
+    public class Interactor : NetworkBehaviour
     {
         [SerializeField] private float m_InteractRadius = 2.5f;
         [SerializeField] private LayerMask m_InteractableLayers;
@@ -29,7 +31,7 @@ namespace GDS
             if (collider.TryGetComponent(out Interactable interactable)
                 && m_Input.Player.Interact.WasPressedThisFrame())
             {
-                interactable.Interact(gameObject);
+                interactable.Interact(NetworkObject);
             }
         }
 
