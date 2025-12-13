@@ -14,18 +14,6 @@ namespace GDS
     {
         [SerializeField] private int m_MaxPlayers = 4;
 
-        private async void Start()
-        { 
-            await UnityServices.InitializeAsync();
-
-            AuthenticationService.Instance.SignedIn += () =>
-            {
-                Debug.Log($"Signed In: {AuthenticationService.Instance.PlayerId}");
-            };
-
-            await AuthenticationService.Instance.SignInAnonymouslyAsync();
-        }
-
         public async Task<string> CreateRelay()
         {
             try
