@@ -1,3 +1,5 @@
+using System;
+using System.Text;
 using System.Threading.Tasks;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
@@ -8,7 +10,7 @@ using UnityEngine.Events;
 
 namespace GDS
 {
-    public class GameConnectionManager : MonoBehaviour
+    public class RelayConnectionManager : MonoBehaviour
     {
         [SerializeField] private int m_MaxPlayers = 4;
 
@@ -79,5 +81,8 @@ namespace GDS
                 Debug.LogError(e);
             }
         }
+
+
     }
+
 }

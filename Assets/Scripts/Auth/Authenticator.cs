@@ -1,3 +1,5 @@
+using System.Text;
+using Unity.Netcode;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 using UnityEngine;
@@ -20,6 +22,10 @@ namespace GDS
             AuthenticationService.Instance.SignedIn += () =>
             {
                 Debug.Log($"Signed In: {AuthenticationService.Instance.PlayerId}");
+
+                byte[] payload = Encoding.UTF8.GetBytes(AuthenticationService.Instance.PlayerId);
+                NetworkManager.Singleton.NetworkConfig.ConnectionData = payload;
+
                 OnSignInSuccessful?.Invoke();
             };
 

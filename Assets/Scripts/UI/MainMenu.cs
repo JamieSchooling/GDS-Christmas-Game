@@ -10,19 +10,19 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private Button m_JoinGameButton;
     [SerializeField] private Button m_QuitButton;
     [SerializeField] private TMP_InputField m_JoinCodeField;
-    [SerializeField] private GameConnectionManager m_GameConnectionManager
+    [SerializeField] private RelayConnectionManager m_RelayConnectionManager
         ;
 
     private void Awake()
     {
         m_CreateGameButton.onClick.AddListener(async () =>
         {
-            await m_GameConnectionManager.CreateRelay();
+            await m_RelayConnectionManager.CreateRelay();
         });
 
         m_JoinGameButton.onClick.AddListener(() =>
         {
-            m_GameConnectionManager.JoinRelay(m_JoinCodeField.text);
+            m_RelayConnectionManager.JoinRelay(m_JoinCodeField.text);
         });
 
         m_QuitButton.onClick.AddListener(() =>
