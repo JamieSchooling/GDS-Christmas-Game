@@ -8,6 +8,7 @@ namespace GDS
     {
         public string PlayerID { get; }
         public ulong ClientID { get; set; }
+        public string DisplayName { get; set; }
 
         public PlayerState(string playerID)
         {
@@ -69,7 +70,7 @@ namespace GDS
         }
 
         [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-        public void SubmitClientInfoRpc(RpcParams rpcParams = default)
+        public void SubmitClientInfoRpc(string displayName, RpcParams rpcParams = default)
         {
             if (!IsServer) return;
 
@@ -85,6 +86,7 @@ namespace GDS
             }
 
             playerState.ClientID = clientID;
+            playerState.DisplayName = displayName;
         }
     }
 }

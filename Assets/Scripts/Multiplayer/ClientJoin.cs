@@ -9,9 +9,11 @@ namespace GDS
         {
             if (!IsOwner) return;
 
-            Debug.Log("Spawned ClientJoin");
+            PlayerProfileData profileData = new();
+            if (!PlayerProfileSerialiser.TryLoadProfileData(out profileData))
+                Debug.LogError("Couldn't load profile data to submit to server.");
 
-            ServerPlayerStateManager.Instance.SubmitClientInfoRpc();
+            ServerPlayerStateManager.Instance.SubmitClientInfoRpc(profileData.DisplayName);
         }
     }
 }
