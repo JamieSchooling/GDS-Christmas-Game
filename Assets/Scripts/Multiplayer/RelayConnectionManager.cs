@@ -1,5 +1,3 @@
-using System;
-using System.Text;
 using System.Threading.Tasks;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
@@ -16,6 +14,8 @@ namespace GDS
 
         public UnityEvent OnConnectionEstablished;
         public UnityEvent OnConnectionFailed;
+
+        public static string JoinCode = null;
 
         public async Task<string> CreateRelay()
         {
@@ -42,6 +42,7 @@ namespace GDS
                 OnConnectionEstablished?.Invoke();
 
                 Debug.Log(joinCode);
+                JoinCode = joinCode;
                 return joinCode;
             }
             catch (RelayServiceException e)

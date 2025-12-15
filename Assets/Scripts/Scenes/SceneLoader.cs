@@ -20,11 +20,13 @@ namespace GDS
 
         public void LoadSceneNetworked()
         {
+            if (!NetworkManager.Singleton.IsServer) return;
             NetworkManager.Singleton.SceneManager.LoadScene(m_Scene, LoadSceneMode.Single);
         }
 
         public void LoadSceneNetworked(SceneObject scene)
         {
+            if (!NetworkManager.Singleton.IsServer) return;
             NetworkManager.Singleton.SceneManager.LoadScene(scene, LoadSceneMode.Single);
         }
     }

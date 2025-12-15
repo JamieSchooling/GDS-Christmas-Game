@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -9,6 +11,7 @@ namespace GDS
         public string PlayerID { get; }
         public ulong ClientID { get; set; }
         public string DisplayName { get; set; }
+        public bool IsConnected { get; set; }
 
         public PlayerState(string playerID)
         {
@@ -21,8 +24,11 @@ namespace GDS
         [SerializeField] private ClientJoin clientJoinPrefab;
 
         public static ServerPlayerStateManager Instance { get; private set; } = null;
+        public PlayerState[] AllPlayerStates => m_PlayerStates.Values.ToArray();
 
-        private Dictionary<string, PlayerState> m_PlayerStates = new Dictionary<string, PlayerState>();
+        public Action<PlayerState, ConnectionEvent> OnPlayerStateUpdated;
+
+        private Dictionary<string, PlayerState> m_PlayerStates = new();
 
         private void Awake()
         {
@@ -41,15 +47,27 @@ namespace GDS
         {
             if (!IsServer) return;
 
-            if (connectionEventData.EventType != ConnectionEvent.ClientConnected) return;
+            if (connectionEventData.EventType == ConnectionEvent.ClientConnected)
+            {
+                NetworkObject.InstantiateAndSpawn
+                (
+                    clientJoinPrefab.gameObject,
+                    networkManager,
+                    connectionEventData.ClientId,
+                    destroyWithScene: true
+                );
+            }
+            else if (connectionEventData.EventType == ConnectionEvent.ClientDisconnected)
+            {
+                if (!ServerConnectionRegistry.Instance.TryGetPlayerId(connectionEventData.ClientId, out string playerID))
+                    return;
 
-            NetworkObject.InstantiateAndSpawn
-            (
-                clientJoinPrefab.gameObject, 
-                networkManager, 
-                connectionEventData.ClientId, 
-                destroyWithScene: true
-            );
+                if (m_PlayerStates.TryGetValue(playerID, out PlayerState playerState))
+                {
+                    playerState.IsConnected = false;
+                    OnPlayerStateUpdated?.Invoke(playerState, ConnectionEvent.ClientDisconnected);
+                }
+            }
         }
 
         public override void OnNetworkSpawn()
@@ -74,6 +92,7 @@ namespace GDS
         {
             if (!IsServer) return;
 
+
             ulong clientID = rpcParams.Receive.SenderClientId;
 
             if (!ServerConnectionRegistry.Instance.TryGetPlayerId(clientID, out string playerID))
@@ -85,8 +104,18 @@ namespace GDS
                 m_PlayerStates.Add(playerID, playerState);
             }
 
+
             playerState.ClientID = clientID;
             playerState.DisplayName = displayName;
+            playerState.IsConnected = true;
+
+            OnPlayerStateUpdated?.Invoke(playerState, ConnectionEvent.ClientConnected);
+            Debug.Log("PlayerStateUpdated event should have fired here");
+        }
+
+        public bool TryGetPlayerState(string playerID, out PlayerState playerState)
+        {
+            return m_PlayerStates.TryGetValue(playerID, out playerState);
         }
     }
 }
