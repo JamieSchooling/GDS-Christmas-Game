@@ -1,94 +1,94 @@
-using GDS;
-using System;
 using System.Collections.Generic;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 
-public class Lobby : NetworkBehaviour
+namespace GDS
 {
-    [SerializeField] private PlayerLobbyItem m_LobbyItemPrefab;
-    [SerializeField] private RectTransform m_PlayerList;
-    [SerializeField] private TextMeshProUGUI m_JoinCodeDisplay;
-
-    private Dictionary<string, PlayerLobbyItem> m_DisplayNameToLobbyItem = new();
-
-    public override void OnNetworkSpawn()
+    public class Lobby : NetworkBehaviour
     {
-        string joinCode = RelayConnectionManager.JoinCode;
-        if (joinCode != null)
-            m_JoinCodeDisplay.text = joinCode;
+        [SerializeField] private PlayerLobbyEntry m_LobbyEntryPrefab;
+        [SerializeField] private RectTransform m_PlayerList;
+        [SerializeField] private TextMeshProUGUI m_JoinCodeDisplay;
 
-        if (!IsServer) return;
+        private Dictionary<string, PlayerLobbyEntry> m_DisplayNameToLobbyEntry = new();
 
-        ServerPlayerStateManager.Instance.OnPlayerStateUpdated += NotifyClientsLobbyUpdate;
-
-        foreach (PlayerState state in ServerPlayerStateManager.Instance.AllPlayerStates)
+        private enum EntryUpdateType
         {
-            UpdateLobbyItemRpc
-            (
-                state.DisplayName,
-                state.IsConnected ? 
-                ConnectionEvent.ClientConnected : 
-                ConnectionEvent.ClientDisconnected
-            );
+            Add,
+            Remove
         }
 
-    }
-
-    private void NotifyClientsLobbyUpdate(PlayerState state, ConnectionEvent connectionType)
-    {
-        Debug.Log("PlayerStateUpdated event recieved here, might not be server");
-        if (!IsServer) return;
-        Debug.Log("PlayerStateUpdated event recieved here, am server");
-
-        foreach (PlayerState s in ServerPlayerStateManager.Instance.AllPlayerStates)
+        public override void OnNetworkSpawn()
         {
-            UpdateLobbyItemRpc
-            (
-                s.DisplayName,
-                s.IsConnected ?
-                ConnectionEvent.ClientConnected :
-                ConnectionEvent.ClientDisconnected
-            );
+            string joinCode = RelayConnectionManager.JoinCode;
+            if (joinCode != null)
+                m_JoinCodeDisplay.text = joinCode;
+
+            if (!IsServer) return;
+
+            ServerConnectionRegistry.Instance.OnPlayerConnected += NotifyClientsLobbyUpdate;
+            ServerConnectionRegistry.Instance.OnPlayerDisconnected += NotifyClientsLobbyUpdate;
+
+            foreach (PlayerState state in ServerConnectionRegistry.Instance.AllPlayerStates)
+            {
+                UpdateLobbyEntryRpc
+                (
+                    state.DisplayName,
+                    state.IsConnected ?
+                    EntryUpdateType.Add :
+                    EntryUpdateType.Remove
+                );
+            }
+
         }
-    }
 
-    //public override void OnNetworkSpawn()
-    //{
-    //    foreach (var client in NetworkManager.Singleton.ConnectedClientsIds)
-    //    {
-    //        ConnectionEventData data = new();
-    //        data.ClientId = client;
-    //        data.EventType = ConnectionEvent.ClientConnected;
-    //        //UpdateLobbyItems(NetworkManager.Singleton, data);
-    //    }
-    //}
-
-    [Rpc(SendTo.ClientsAndHost, InvokePermission = RpcInvokePermission.Server)]
-    private void UpdateLobbyItemRpc(string displayName, ConnectionEvent connectionType)
-    {
-        Debug.Log(connectionType);
-
-        if (connectionType == ConnectionEvent.ClientConnected)
+        private void NotifyClientsLobbyUpdate(PlayerState state)
         {
-            if (m_DisplayNameToLobbyItem.ContainsKey(displayName)) return;
+            Debug.Log("PlayerStateUpdated event recieved here, might not be server");
+            if (!IsServer) return;
+            Debug.Log("PlayerStateUpdated event recieved here, am server");
 
-            PlayerLobbyItem lobbyItem = Instantiate(
-                m_LobbyItemPrefab
-            );
+            foreach (PlayerState s in ServerConnectionRegistry.Instance.AllPlayerStates)
+            {
+                Debug.Log($"IsConnected: {s.IsConnected}");
 
-            lobbyItem.transform.SetParent(m_PlayerList, false);
-
-            lobbyItem.Init(displayName);
-            m_DisplayNameToLobbyItem.Add(displayName, lobbyItem.GetComponent<PlayerLobbyItem>());
+                UpdateLobbyEntryRpc
+                (
+                    s.DisplayName,
+                    s.IsConnected ?
+                    EntryUpdateType.Add :
+                    EntryUpdateType.Remove
+                );
+            }
         }
-        else if (connectionType == ConnectionEvent.ClientDisconnected)
-        {
-            if (!m_DisplayNameToLobbyItem.ContainsKey(displayName)) return;
 
-            Destroy(m_DisplayNameToLobbyItem[displayName]);
-            m_DisplayNameToLobbyItem.Remove(displayName);
+        [Rpc(SendTo.ClientsAndHost, InvokePermission = RpcInvokePermission.Server)]
+        private void UpdateLobbyEntryRpc(string displayName, EntryUpdateType updateType)
+        {
+            Debug.Log(updateType);
+
+            if (updateType == EntryUpdateType.Add)
+            {
+                if (m_DisplayNameToLobbyEntry.ContainsKey(displayName)) return;
+
+                PlayerLobbyEntry lobbyEntry = Instantiate(
+                    m_LobbyEntryPrefab
+                );
+
+                lobbyEntry.transform.SetParent(m_PlayerList, false);
+
+                lobbyEntry.Init(displayName);
+                m_DisplayNameToLobbyEntry.Add(displayName, lobbyEntry.GetComponent<PlayerLobbyEntry>());
+            }
+            if (updateType == EntryUpdateType.Remove)
+            {
+                if (!m_DisplayNameToLobbyEntry.TryGetValue(displayName, out PlayerLobbyEntry entry))
+                    return;
+
+                Destroy(entry.gameObject);
+                m_DisplayNameToLobbyEntry.Remove(displayName);
+            }
         }
     }
 }

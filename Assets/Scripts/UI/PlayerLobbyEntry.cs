@@ -1,8 +1,7 @@
 using TMPro;
-using Unity.Netcode;
 using UnityEngine;
 
-public class PlayerLobbyItem : MonoBehaviour
+public class PlayerLobbyEntry : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI m_DisplayName;
 
