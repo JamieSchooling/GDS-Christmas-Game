@@ -65,7 +65,13 @@ namespace GDS
                     var scnObj = GetSceneObject(newScene.name);
                     if (scnObj == null)
                     {
-                        Debug.LogWarning("The scene " + newScene.name + " cannot be used. To use this scene add it to the build settings for the project.");
+                        EditorUtility.DisplayDialog
+                        (
+                            "Scene not included in build.",
+                            $"The scene [{newScene.name}] cannot be used. To use this scene, add it to the build settings for this project.", 
+                            "Ok"
+                        );
+                        //Debug.LogWarning("The scene " + newScene.name + " cannot be used. To use this scene add it to the build settings for the project.");
                     }
                     else
                     {

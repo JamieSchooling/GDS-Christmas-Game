@@ -45,9 +45,7 @@ namespace GDS
 
         private void NotifyClientsLobbyUpdate(PlayerState state)
         {
-            Debug.Log("PlayerStateUpdated event recieved here, might not be server");
             if (!IsServer) return;
-            Debug.Log("PlayerStateUpdated event recieved here, am server");
 
             foreach (PlayerState s in ServerConnectionRegistry.Instance.AllPlayerStates)
             {
@@ -66,8 +64,6 @@ namespace GDS
         [Rpc(SendTo.ClientsAndHost, InvokePermission = RpcInvokePermission.Server)]
         private void UpdateLobbyEntryRpc(string displayName, EntryUpdateType updateType)
         {
-            Debug.Log(updateType);
-
             if (updateType == EntryUpdateType.Add)
             {
                 if (m_DisplayNameToLobbyEntry.ContainsKey(displayName)) return;
