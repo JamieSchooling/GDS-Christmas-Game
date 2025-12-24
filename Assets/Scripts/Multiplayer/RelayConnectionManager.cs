@@ -1,30 +1,21 @@
 using System.Threading.Tasks;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
-using Unity.Networking.Transport.Relay;
-using Unity.Services.Authentication;
-using Unity.Services.Core;
 using Unity.Services.Relay;
 using Unity.Services.Relay.Models;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace GDS
 {
-    public class Relay : MonoBehaviour
+    public class RelayConnectionManager : MonoBehaviour
     {
         [SerializeField] private int m_MaxPlayers = 4;
 
-        private async void Start()
-        { 
-            await UnityServices.InitializeAsync();
+        public UnityEvent OnConnectionEstablished;
+        public UnityEvent OnConnectionFailed;
 
-            AuthenticationService.Instance.SignedIn += () =>
-            {
-                Debug.Log($"Signed In: {AuthenticationService.Instance.PlayerId}");
-            };
-
-            await AuthenticationService.Instance.SignInAnonymouslyAsync();
-        }
+        public static string JoinCode = null;
 
         public async Task<string> CreateRelay()
         {
@@ -42,13 +33,21 @@ namespace GDS
                     allocation.ConnectionData
                 );
 
-                NetworkManager.Singleton.StartHost();
+                if (!NetworkManager.Singleton.StartHost())
+                {
+                    OnConnectionFailed?.Invoke();
+                    return null;
+                }
+
+                OnConnectionEstablished?.Invoke();
 
                 Debug.Log(joinCode);
+                JoinCode = joinCode;
                 return joinCode;
             }
             catch (RelayServiceException e)
             {
+                OnConnectionFailed?.Invoke();
                 Debug.LogError(e);
                 return null;
             }
@@ -69,12 +68,22 @@ namespace GDS
                     allocation.HostConnectionData
                 );
 
-                NetworkManager.Singleton.StartClient();
+                if (!NetworkManager.Singleton.StartClient())
+                {
+                    OnConnectionFailed?.Invoke();
+                    return;
+                }
+
+                OnConnectionEstablished?.Invoke();
             }
             catch (RelayServiceException e)
             {
+                OnConnectionFailed?.Invoke();
                 Debug.LogError(e);
             }
         }
+
+
     }
+
 }
