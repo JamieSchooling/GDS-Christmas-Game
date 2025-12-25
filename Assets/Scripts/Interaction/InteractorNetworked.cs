@@ -8,30 +8,34 @@ namespace GDS
     /// </summary>
     /// <remarks>Detects objects within a radius, filtered by a <see cref="LayerMask"/>. When an <see cref="InteractableNetworked"/> is detected
     /// and the interact button is pressed, the object is interacted with.</remarks>
-    [RequireComponent(typeof(NetworkObject))]
     public class InteractorNetworked : NetworkBehaviour
     {
         [SerializeField] private float m_InteractRadius = 2.5f;
         [SerializeField] private LayerMask m_InteractableLayers;
 
-        private InputSystem_Actions m_Input;
+        private Player m_Owner;
+        private bool m_InteractPressed;
 
-        private void Awake()
+        public void Initialise(Player owner)
         {
-            m_Input = new();
-            m_Input.Enable();
+            m_Owner = owner;
         }
 
-        void Update()
+        public void UpdateInput(PlayerInput input)
+        {
+            m_InteractPressed = input.InteractPressedThisFrame;
+        }
+
+        public void CheckForInteractables()
         {
             Collider2D collider =
                 Physics2D.OverlapCircle(transform.position, m_InteractRadius, m_InteractableLayers);
             if (!collider) return;
 
             if (collider.TryGetComponent(out InteractableNetworked interactable)
-                && m_Input.Player.Interact.WasPressedThisFrame())
+                && m_InteractPressed)
             {
-                interactable.Interact(NetworkObject);
+                interactable.Interact(m_Owner.NetworkObject);
             }
         }
 

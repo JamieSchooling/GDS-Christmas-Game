@@ -12,24 +12,25 @@ namespace GDS
     public class PlayerMovement : NetworkBehaviour
     {
         [SerializeField] private float m_MoveSpeed = 3.0f;
-
-        private InputSystem_Actions m_Input;
         private Rigidbody2D m_Rigidbody;
+
+        private Vector2 m_InputDirection;
 
         private void Awake()
         {
             m_Rigidbody = GetComponent<Rigidbody2D>();
-
-            m_Input = new();
-            m_Input.Enable();
         }
 
-        // Update is called once per frame
+        public void UpdateInput(PlayerInput input)
+        {
+            m_InputDirection = input.Direction;
+        }
+
         private void FixedUpdate()
         {
             if (!IsOwner) return;
 
-            m_Rigidbody.linearVelocity = m_MoveSpeed * m_Input.Player.Move.ReadValue<Vector2>();
+            m_Rigidbody.linearVelocity = m_MoveSpeed * m_InputDirection;
         }
     }
 }

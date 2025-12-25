@@ -1,3 +1,4 @@
+using GDS;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -18,12 +19,18 @@ public class ComponentStation : NetworkBehaviour
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
     private void AssignRpc(NetworkObjectReference playerRef)
     {
-        if (!playerRef.TryGet(out NetworkObject player))
-            return;
+        if (!playerRef.TryGet(out NetworkObject playerNetObj)) return;
 
-        NetworkObject component 
-            = Instantiate(m_ComponentPrefab, player.transform.position + new Vector3(2, 0, 0), Quaternion.identity);
-        component.Spawn();
-        component.TrySetParent(player);
+        if (!playerNetObj.TryGetComponent(out Player player)) return;
+
+        NetworkObject component = NetworkObject.InstantiateAndSpawn
+        (
+            m_ComponentPrefab.gameObject, 
+            NetworkManager.Singleton, 
+            ownerClientId: playerNetObj.OwnerClientId,
+            position: player.Body.position + new Vector3(2, 0, 0), 
+            rotation: Quaternion.identity
+        );
+        component.TrySetParent(player.Body);
     }
 }

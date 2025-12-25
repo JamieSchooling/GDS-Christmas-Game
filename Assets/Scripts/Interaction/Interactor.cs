@@ -14,22 +14,21 @@ namespace GDS
         [SerializeField] private float m_InteractRadius = 2.5f;
         [SerializeField] private LayerMask m_InteractableLayers;
 
-        private InputSystem_Actions m_Input;
+        private bool m_InteractPressed;
 
-        private void Awake()
+        public void UpdateInput(PlayerInput input)
         {
-            m_Input = new();
-            m_Input.Enable();
+            m_InteractPressed = input.InteractPressedThisFrame;
         }
 
-        void Update()
+        public void CheckForInteractables()
         {
             Collider2D collider =
                 Physics2D.OverlapCircle(transform.position, m_InteractRadius, m_InteractableLayers);
             if (!collider) return;
 
             if (collider.TryGetComponent(out Interactable interactable)
-                && m_Input.Player.Interact.WasPressedThisFrame())
+                && m_InteractPressed)
             {
                 interactable.Interact(gameObject);
             }
