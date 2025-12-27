@@ -104,7 +104,7 @@ namespace GDS
                 for (int j = 0; j < columns; ++j)
                 {
                     m_Frames.Add(
-                        Sprite.Create(sheet.texture, new Rect(cellWidth * j, cellHeight * i, cellWidth, cellHeight), new Vector2(0.5f, 0.0f))
+                        Sprite.Create(sheet.texture, new Rect(cellWidth * j, cellHeight * i, cellWidth, cellHeight), new Vector2(0.5f, 0.0f), sheet.pixelsPerUnit)
                     );
                 }
             }
