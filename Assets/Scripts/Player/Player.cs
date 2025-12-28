@@ -14,7 +14,7 @@ namespace GDS
     {
         [SerializeField] private PlayerMovement m_PlayerMovement;
         [SerializeField] private InteractorNetworked m_PlayerInteractor;
-        [SerializeField] private PlayerSpriteAssigner m_PlayerSpriteAssigner;
+        [SerializeField] private AnimationSynchroniser m_PlayerAnimationSynchroniser;
 
         private InputSystem_Actions m_Input;
 
@@ -24,7 +24,7 @@ namespace GDS
 
         public override void OnNetworkSpawn()
         {
-            m_PlayerSpriteAssigner.Initialise(OwnerClientId);
+            m_PlayerAnimationSynchroniser.Initialise(OwnerClientId);
 
             if (!IsOwner) return;
 
@@ -36,6 +36,8 @@ namespace GDS
 
         private void Update()
         {
+            m_PlayerAnimationSynchroniser.UpdateAnimations(m_CurrentInput);
+
             if (!IsOwner) return;
 
             m_CurrentInput.Direction = m_Input.Player.Move.ReadValue<Vector2>();

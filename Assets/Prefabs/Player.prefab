@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 108309068119483432}
   - component: {fileID: 7422310079286249693}
   - component: {fileID: 2810372330438951464}
-  - component: {fileID: 1643290593674995570}
+  - component: {fileID: 1588818074508828434}
   m_Layer: 3
   m_Name: Sprite
   m_TagString: Untagged
@@ -106,11 +106,11 @@ MonoBehaviour:
     Rows: 4
     Columns: 1
   m_Animations:
-  - m_Name: Forward
+  - m_Name: Down
     m_Frames: 00000000
     m_FrameRate: 8
     m_ShouldLoop: 1
-  - m_Name: Back
+  - m_Name: Up
     m_Frames: 01000000
     m_FrameRate: 8
     m_ShouldLoop: 1
@@ -123,7 +123,7 @@ MonoBehaviour:
     m_FrameRate: 8
     m_ShouldLoop: 0
   m_Play: 0
---- !u!114 &1643290593674995570
+--- !u!114 &1588818074508828434
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -132,9 +132,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 638544500541357497}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c55a24d6ff580f8498466f7ac8a61126, type: 3}
+  m_Script: {fileID: 11500000, guid: 33ef482f3592f1a41bea949a92257d95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
   m_SpriteSheets:
   - {fileID: 21300000, guid: eae95cfd640611a49b7aa40264a7eabb, type: 3}
   - {fileID: 21300000, guid: 03549b2275cd44a45b9234502b5b2289, type: 3}
@@ -452,4 +453,4 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   m_PlayerMovement: {fileID: 1986363992655836515}
   m_PlayerInteractor: {fileID: 6796027618794946727}
-  m_PlayerSpriteAssigner: {fileID: 1643290593674995570}
+  m_PlayerAnimationSynchroniser: {fileID: 1588818074508828434}
