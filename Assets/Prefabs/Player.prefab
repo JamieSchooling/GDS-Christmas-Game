@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 108309068119483432}
   - component: {fileID: 7422310079286249693}
   - component: {fileID: 2810372330438951464}
+  - component: {fileID: 1643290593674995570}
   m_Layer: 3
   m_Name: Sprite
   m_TagString: Untagged
@@ -82,7 +83,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.16, y: 0.2}
+  m_Size: {x: 1, y: 1.25}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0
@@ -100,7 +101,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40cde5154a573e4458a40d5f69a8a2fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_DefaultSpriteSheet: {fileID: 21300000, guid: eae95cfd640611a49b7aa40264a7eabb, type: 3}
+  m_DefaultSpriteSheet: {fileID: 0}
   m_SpriteSheetSize:
     Rows: 4
     Columns: 1
@@ -122,6 +123,24 @@ MonoBehaviour:
     m_FrameRate: 8
     m_ShouldLoop: 0
   m_Play: 0
+--- !u!114 &1643290593674995570
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 638544500541357497}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c55a24d6ff580f8498466f7ac8a61126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SpriteSheets:
+  - {fileID: 21300000, guid: eae95cfd640611a49b7aa40264a7eabb, type: 3}
+  - {fileID: 21300000, guid: 03549b2275cd44a45b9234502b5b2289, type: 3}
+  - {fileID: 21300000, guid: c856194ce00722f44ab4913a9d9ef78c, type: 3}
+  - {fileID: 21300000, guid: 19b6ac80c54af8d449e8ba0ba8904e9f, type: 3}
+  m_Animator: {fileID: 2810372330438951464}
 --- !u!1 &2313920373276715227
 GameObject:
   m_ObjectHideFlags: 0
@@ -405,7 +424,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3802454744
+  GlobalObjectIdHash: 2230218017
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -433,3 +452,4 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   m_PlayerMovement: {fileID: 1986363992655836515}
   m_PlayerInteractor: {fileID: 6796027618794946727}
+  m_PlayerSpriteAssigner: {fileID: 1643290593674995570}

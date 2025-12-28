@@ -14,6 +14,7 @@ namespace GDS
     {
         [SerializeField] private PlayerMovement m_PlayerMovement;
         [SerializeField] private InteractorNetworked m_PlayerInteractor;
+        [SerializeField] private PlayerSpriteAssigner m_PlayerSpriteAssigner;
 
         private InputSystem_Actions m_Input;
 
@@ -23,6 +24,8 @@ namespace GDS
 
         public override void OnNetworkSpawn()
         {
+            m_PlayerSpriteAssigner.Initialise(OwnerClientId);
+
             if (!IsOwner) return;
 
             m_Input = new();
