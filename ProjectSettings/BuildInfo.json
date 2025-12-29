@@ -1,4 +1,5 @@
 {
-  "Version": "0.1.0",
-  "BuildNumber": 72,
+    "Version": "0.1.0",
+    "BuildNumber": 77,
+    "BuildPath": "Build/{Version}/{Platform}"
 }

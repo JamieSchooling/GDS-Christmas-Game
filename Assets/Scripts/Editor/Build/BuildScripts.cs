@@ -6,6 +6,7 @@ public struct BuildInfo
 {
     public string Version;
     public int BuildNumber;
+    public string BuildPath;
 
     public static BuildInfo GetCurrent()
     {
@@ -20,6 +21,7 @@ public struct BuildInfo
             {
                 Version = "0.1.0",
                 BuildNumber = 0,
+                BuildPath = "Build/{Platform}/{Version}"
             };
             Update(buildInfo);
 
@@ -59,17 +61,42 @@ public static class BuildScripts
         return enabledScenes.ToArray();
     }
 
-    // General build method
-    static void BuildForTarget(BuildTarget target, string outputPath, bool runBuild = true)
+    static string CreateBuildPath(BuildInfo buildInfo, BuildTarget target)
     {
+        string path = buildInfo.BuildPath;
 
+        if (path.Contains("{Platform}"))
+        {
+            switch (target)
+            {
+                case BuildTarget.StandaloneWindows64:
+                    path = path.Replace("{Platform}", "Windows"); break;
+                default:
+                    path = path.Replace("{Platform}", "Other"); break;
+            }
+        }
+        if (path.Contains("{Version}"))
+        {
+            path = path.Replace("{Version}", buildInfo.Version);
+        }
+        if (path.Contains("{BuildNumber}"))
+        {
+            path = path.Replace("{BuildNumber}", buildInfo.BuildNumber.ToString());
+        }
+
+        return path;
+    }
+
+    // General build method
+    static void BuildForTarget(BuildTarget target, bool runBuild = true)
+    {
         string[] scenes = GetEnabledScenes();
 
         BuildInfo buildInfo = BuildInfo.GetCurrent();
         buildInfo.BuildNumber++;
-        PlayerSettings.bundleVersion = $"{buildInfo.Version}.{buildInfo.BuildNumber}";
+        PlayerSettings.bundleVersion = $"{buildInfo.Version}.build{buildInfo.BuildNumber}";
 
-        outputPath = $"{outputPath}/v{buildInfo.Version}/{PlayerSettings.productName}.exe";
+        string outputPath = $"{CreateBuildPath(buildInfo, target)}/{PlayerSettings.productName}.exe";
 
         // Build player options
         BuildPlayerOptions options = new BuildPlayerOptions
@@ -91,16 +118,18 @@ public static class BuildScripts
         BuildInfo.Update(buildInfo);
     }
 
+    // Builds for Windows (Default keybind Ctrl+Shift+W)
     [MenuItem("Build/Windows/Build %#W")]
     public static void BuildWindows()
     {
-        BuildForTarget(BuildTarget.StandaloneWindows64, "Build/Windows", false);
+        BuildForTarget(BuildTarget.StandaloneWindows64, false);
     }
 
+    // Builds for Windows and runs the player on build completion (Default keybind Ctrl+W)
     [MenuItem("Build/Windows/Build And Run %W")]
     public static void BuildAndRunWindows()
     {
-        BuildForTarget(BuildTarget.StandaloneWindows64, "Build/Windows");
+        BuildForTarget(BuildTarget.StandaloneWindows64);
     }
 
     // Helper to validate and log the build result
