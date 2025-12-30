@@ -1,6 +1,6 @@
 {
     "Version": "0.1.0",
-    "BuildNumber": 92,
+    "BuildNumber": 97,
     "VersionStringFormat": "v{Version} (build {BuildNumber})",
     "BuildPath": "Build/v{Version}/{Platform}"
 }

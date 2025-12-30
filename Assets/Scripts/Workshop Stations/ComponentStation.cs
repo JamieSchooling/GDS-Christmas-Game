@@ -11,9 +11,7 @@ public class ComponentStation : NetworkBehaviour
         if (player == null)
             return;
 
-        NetworkObjectReference playerRef = player;
-
-        AssignRpc(playerRef);
+        AssignRpc(player);
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
@@ -23,11 +21,13 @@ public class ComponentStation : NetworkBehaviour
 
         if (!playerNetObj.TryGetComponent(out Player player)) return;
 
+        if (player.ItemSlot.ContainsItem) return;
+
         NetworkObject component = NetworkObject.InstantiateAndSpawn
         (
             m_ItemPrefab.gameObject,
             NetworkManager.Singleton
         );
-        component.GetComponent<Item>().SetOwnerSlot(player.ItemSlot);
+        player.ItemSlot.SetCurrentHeldItem(component.GetComponent<Item>()); // Needs to run on client
     }
 }

@@ -10,9 +10,7 @@ namespace GDS
             if (ownerSlot == null)
                 return;
 
-            NetworkObjectReference slotRef = ownerSlot.NetworkObject;
-
-            SetOwnerSlotRpc(slotRef);
+            SetOwnerSlotRpc(ownerSlot.NetworkObject);
         }
 
         [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
