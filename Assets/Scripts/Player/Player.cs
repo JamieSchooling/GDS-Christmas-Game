@@ -15,12 +15,14 @@ namespace GDS
         [SerializeField] private PlayerMovement m_PlayerMovement;
         [SerializeField] private InteractorNetworked m_PlayerInteractor;
         [SerializeField] private AnimationSynchroniser m_PlayerAnimationSynchroniser;
+        [SerializeField] private Transform m_HoldPoint;
 
         private InputSystem_Actions m_Input;
 
         private PlayerInput m_CurrentInput;
 
         public Transform Body => m_PlayerMovement.transform;
+        public Transform HoldPoint => m_HoldPoint;
 
         public override void OnNetworkSpawn()
         {

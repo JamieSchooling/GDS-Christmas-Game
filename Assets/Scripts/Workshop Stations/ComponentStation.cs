@@ -28,12 +28,9 @@ public class ComponentStation : NetworkBehaviour
             m_ComponentPrefab.gameObject, 
             NetworkManager.Singleton, 
             ownerClientId: playerNetObj.OwnerClientId,
-            position: player.Body.position, 
+            position: player.HoldPoint.position, 
             rotation: Quaternion.identity
         );
-        if (component.TryGetComponent(out TargetFollow follow))
-        {
-            follow.SetTarget(player.Body);
-        }
+        component.TrySetParent(playerNetObj);
     }
 }
