@@ -5,6 +5,7 @@ using UnityEngine.UIElements;
 public class BuildInfoConfigWindow : EditorWindow
 {
     private TextField m_VersionField;
+    private TextField m_VersionFormatField;
     private TextField m_BuildPathField;
 
     [MenuItem("Build/Configure")]
@@ -26,6 +27,11 @@ public class BuildInfoConfigWindow : EditorWindow
         m_VersionField.RegisterValueChangedCallback((version) => hasUnsavedChanges = true);
         root.Add(m_VersionField);
 
+        m_VersionFormatField = new TextField("Application Version String Format");
+        m_VersionFormatField.SetValueWithoutNotify(buildInfo.VersionStringFormat);
+        m_VersionFormatField.RegisterValueChangedCallback((versionFormat) => hasUnsavedChanges = true);
+        root.Add(m_VersionFormatField);
+
         m_BuildPathField = new TextField("Build Path");
         m_BuildPathField.SetValueWithoutNotify(buildInfo.BuildPath);
         m_BuildPathField.RegisterValueChangedCallback((buildPath) => hasUnsavedChanges = true);
@@ -40,6 +46,7 @@ public class BuildInfoConfigWindow : EditorWindow
     {
         BuildInfo buildInfo = BuildInfo.GetCurrent();
         buildInfo.Version = m_VersionField.value;
+        buildInfo.VersionStringFormat = m_VersionFormatField.value;
         buildInfo.BuildPath = m_BuildPathField.value;
         BuildInfo.Update(buildInfo);
 

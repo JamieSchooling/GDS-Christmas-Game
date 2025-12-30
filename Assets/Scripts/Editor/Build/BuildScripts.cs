@@ -6,6 +6,7 @@ public struct BuildInfo
 {
     public string Version;
     public int BuildNumber;
+    public string VersionStringFormat;
     public string BuildPath;
 
     public static BuildInfo GetCurrent()
@@ -21,6 +22,7 @@ public struct BuildInfo
             {
                 Version = "0.1.0",
                 BuildNumber = 0,
+                VersionStringFormat = "{Version}.build{BuildNumber}",
                 BuildPath = "Build/{Platform}/{Version}"
             };
             Update(buildInfo);
@@ -87,6 +89,22 @@ public static class BuildScripts
         return path;
     }
 
+    static string CreateVersionString(BuildInfo buildInfo)
+    {
+        string versionString = buildInfo.VersionStringFormat;
+
+        if (versionString.Contains("{Version}"))
+        {
+            versionString = versionString.Replace("{Version}", buildInfo.Version);
+        }
+        if (versionString.Contains("{BuildNumber}"))
+        {
+            versionString = versionString.Replace("{BuildNumber}", buildInfo.BuildNumber.ToString());
+        }
+
+        return versionString;
+    }
+
     // General build method
     static void BuildForTarget(BuildTarget target, bool runBuild = true)
     {
@@ -94,7 +112,7 @@ public static class BuildScripts
 
         BuildInfo buildInfo = BuildInfo.GetCurrent();
         buildInfo.BuildNumber++;
-        PlayerSettings.bundleVersion = $"{buildInfo.Version}.build{buildInfo.BuildNumber}";
+        PlayerSettings.bundleVersion = CreateVersionString(buildInfo);
 
         string outputPath = $"{CreateBuildPath(buildInfo, target)}/{PlayerSettings.productName}.exe";
 
