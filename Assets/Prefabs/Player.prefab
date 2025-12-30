@@ -152,7 +152,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4927853171217970471}
   m_Layer: 3
-  m_Name: Hold Point
+  m_Name: ItemSlotPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -189,6 +189,7 @@ GameObject:
   - component: {fileID: 4117608526427037315}
   - component: {fileID: 8332031586018261142}
   - component: {fileID: 122179642942729871}
+  - component: {fileID: 7322682488410605814}
   m_Layer: 3
   m_Name: Player
   m_TagString: Untagged
@@ -226,7 +227,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 4085010129
+  GlobalObjectIdHash: 3505062089
   InScenePlacedSourceGlobalObjectIdHash: 3013561202
   DeferredDespawnTick: 0
   Ownership: 1
@@ -255,7 +256,7 @@ MonoBehaviour:
   m_PlayerMovement: {fileID: 4586606321113652199}
   m_PlayerInteractor: {fileID: 1349437250891097917}
   m_PlayerAnimationSynchroniser: {fileID: 5087472372164527954}
-  m_HoldPoint: {fileID: 4927853171217970471}
+  m_ItemSlot: {fileID: 7322682488410605814}
 --- !u!114 &4586606321113652199
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -396,6 +397,20 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0.25}
   m_Radius: 0.25
+--- !u!114 &7322682488410605814
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5770502990082261969}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 261bc8a6acae477449164dcc6ba78592, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  m_SlotPoint: {fileID: 4927853171217970471}
 --- !u!1 &7556814107851261555
 GameObject:
   m_ObjectHideFlags: 0

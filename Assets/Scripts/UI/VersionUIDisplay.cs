@@ -1,14 +1,17 @@
 using TMPro;
 using UnityEngine;
 
-[RequireComponent(typeof(TextMeshProUGUI))]
-public class VersionUIDisplay : MonoBehaviour
+namespace GDS
 {
-    private TextMeshProUGUI m_Text;
-
-    private void Awake()
+    [RequireComponent(typeof(TextMeshProUGUI))]
+    public class VersionUIDisplay : MonoBehaviour
     {
-        m_Text = GetComponent<TextMeshProUGUI>();
-        m_Text.text = Application.version;
+        private TextMeshProUGUI m_Text;
+
+        private void Awake()
+        {
+            m_Text = GetComponent<TextMeshProUGUI>();
+            m_Text.text = Application.version;
+        }
     }
 }

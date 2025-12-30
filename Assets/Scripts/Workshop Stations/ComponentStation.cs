@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ComponentStation : NetworkBehaviour
 {
-    [SerializeField] private NetworkObject m_ComponentPrefab;
+    [SerializeField] private Item m_ItemPrefab;
 
     public void AssignComponent(NetworkObject player)
     {
@@ -25,12 +25,9 @@ public class ComponentStation : NetworkBehaviour
 
         NetworkObject component = NetworkObject.InstantiateAndSpawn
         (
-            m_ComponentPrefab.gameObject, 
-            NetworkManager.Singleton, 
-            ownerClientId: playerNetObj.OwnerClientId,
-            position: player.HoldPoint.position, 
-            rotation: Quaternion.identity
+            m_ItemPrefab.gameObject,
+            NetworkManager.Singleton
         );
-        component.TrySetParent(playerNetObj);
+        component.GetComponent<Item>().SetOwnerSlot(player.ItemSlot);
     }
 }

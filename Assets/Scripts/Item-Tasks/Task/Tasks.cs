@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Tasks : MonoBehaviour
 {
-    [SerializeField] Item[] Items;
+    [SerializeField] Toy[] Items;
     private float nextActionTime = 0.0f;
     public float frequency = 5f;
 
