@@ -190,3 +190,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
+  m_SpriteRenderer: {fileID: 777693483707541891}
+  m_LevelItems: {fileID: 11400000, guid: 1e1123fb26cec73409ba521cd96bb0fd, type: 2}

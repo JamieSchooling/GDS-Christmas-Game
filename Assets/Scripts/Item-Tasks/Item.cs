@@ -5,6 +5,18 @@ namespace GDS
 {
     public class Item : NetworkBehaviour
     {
+        [SerializeField] private SpriteRenderer m_SpriteRenderer;
+        [SerializeField] private LevelItems m_LevelItems;
+
+        [Rpc(SendTo.ClientsAndHost, InvokePermission = RpcInvokePermission.Server)]
+        public void SetDataRpc(int itemDataIndex)
+        {
+            Debug.Log("Setting data...");
+            ItemData data = m_LevelItems.AllLevelItems[itemDataIndex];
+            Debug.Log(data.Name);
+            m_SpriteRenderer.sprite = data.Sprite;
+        }
+
         public void SetOwnerSlot(ItemSlot ownerSlot)
         {
             if (ownerSlot == null)

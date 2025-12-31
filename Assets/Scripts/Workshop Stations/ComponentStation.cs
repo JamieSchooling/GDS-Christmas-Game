@@ -5,6 +5,8 @@ using UnityEngine;
 public class ComponentStation : NetworkBehaviour
 {
     [SerializeField] private Item m_ItemPrefab;
+    [SerializeField] private LevelItems m_LevelItems;
+    [SerializeField] private Component m_ComponentData;
 
     public void AssignComponent(NetworkObject player)
     {
@@ -28,6 +30,8 @@ public class ComponentStation : NetworkBehaviour
             m_ItemPrefab.gameObject,
             NetworkManager.Singleton
         );
-        player.ItemSlot.SetCurrentHeldItem(component.GetComponent<Item>()); // Needs to run on client
+        Item item = component.GetComponent<Item>();
+        item.SetDataRpc(m_LevelItems.IndexOf(m_ComponentData));
+        player.ItemSlot.SetCurrentHeldItem(item);
     }
 }
