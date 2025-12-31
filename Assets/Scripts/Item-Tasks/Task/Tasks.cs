@@ -1,32 +1,35 @@
 using System.Linq;
 using UnityEngine;
 
-public class Tasks : MonoBehaviour
+namespace GDS
 {
-    [SerializeField] Toy[] Items;
-    private float nextActionTime = 0.0f;
-    public float frequency = 5f;
-
-    void Update()
+    public class Tasks : MonoBehaviour
     {
-        if (Time.time > nextActionTime)
+        [SerializeField] ItemData[] Items;
+        private float nextActionTime = 0.0f;
+        public float frequency = 5f;
+
+        void Update()
         {
-            nextActionTime += frequency;
-            GenItem();
+            if (Time.time > nextActionTime)
+            {
+                nextActionTime += frequency;
+                GenItem();
+            }
         }
-    }
 
-    private void GenItem()
-    {
-
-        int Generated = Random.Range(0, Items.Count());
-        int comNum = Items[Generated].Components.Count();
-        Debug.Log(Items[Generated].name);
-        foreach (int index in Enumerable.Range(0, comNum))
+        private void GenItem()
         {
-            Debug.Log(Items[Generated].Components[index].name);
-        }
-        
 
+            int Generated = Random.Range(0, Items.Count());
+            int comNum = Items[Generated].Components.Count();
+            Debug.Log(Items[Generated].name);
+            foreach (int index in Enumerable.Range(0, comNum))
+            {
+                Debug.Log(Items[Generated].Components[index].name);
+            }
+
+
+        }
     }
 }

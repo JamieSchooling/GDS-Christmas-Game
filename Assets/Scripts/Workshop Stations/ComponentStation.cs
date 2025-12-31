@@ -6,7 +6,7 @@ public class ComponentStation : NetworkBehaviour
 {
     [SerializeField] private Item m_ItemPrefab;
     [SerializeField] private LevelItems m_LevelItems;
-    [SerializeField] private Component m_ComponentData;
+    [SerializeField] private ItemData m_ComponentData;
 
     public void AssignComponent(NetworkObject player)
     {
@@ -31,7 +31,7 @@ public class ComponentStation : NetworkBehaviour
             NetworkManager.Singleton
         );
         Item item = component.GetComponent<Item>();
-        item.SetDataRpc(m_LevelItems.IndexOf(m_ComponentData));
+        item.SetDataRpc(m_LevelItems.IndexOf(m_ComponentData), m_ComponentData.ItemType);
         player.ItemSlot.SetCurrentHeldItem(item);
     }
 }

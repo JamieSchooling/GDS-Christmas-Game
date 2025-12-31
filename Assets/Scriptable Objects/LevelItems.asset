@@ -12,5 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1813ca2135940a408fe3bd79cdba8a7, type: 3}
   m_Name: LevelItems
   m_EditorClassIdentifier: 
-  m_LevelItems:
-  - {fileID: 11400000, guid: 0c80ea563a310a140b7abf20436fd671, type: 2}
+  m_BaseComponents:
+  - {fileID: 11400000, guid: ab9f0776b30c1614da5043ea85d7a475, type: 2}
+  m_CraftableComponents: []
+  m_Toys: []

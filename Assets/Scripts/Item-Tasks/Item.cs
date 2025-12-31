@@ -9,11 +9,16 @@ namespace GDS
         [SerializeField] private LevelItems m_LevelItems;
 
         [Rpc(SendTo.ClientsAndHost, InvokePermission = RpcInvokePermission.Server)]
-        public void SetDataRpc(int itemDataIndex)
+        public void SetDataRpc(int itemDataIndex, ItemType type)
         {
-            Debug.Log("Setting data...");
-            ItemData data = m_LevelItems.AllLevelItems[itemDataIndex];
-            Debug.Log(data.Name);
+            ItemData data = type switch
+            {
+                ItemType.BaseComponent => m_LevelItems.BaseComponents[itemDataIndex],
+                ItemType.CraftableComponent => m_LevelItems.CraftableComponents[itemDataIndex],
+                ItemType.Toy => m_LevelItems.Toys[itemDataIndex],
+                _ => throw new System.NotImplementedException(),
+            };
+
             m_SpriteRenderer.sprite = data.Sprite;
         }
 

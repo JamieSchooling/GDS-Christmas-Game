@@ -19,23 +19,11 @@ namespace GDS
 
         public bool TryTransferHeldItem(ItemSlot newSlot)
         {
-            if (CurrentHeldItem == null)
-            {
-                Debug.LogError("Couldn't transfer item: Item is null");
-                return false;
-            }
+            if (CurrentHeldItem == null) return false;
 
-            if (newSlot == null)
-            {
-                Debug.LogError("Couldn't transfer item: New ItemSlot is null");
-                return false;
-            }
+            if (newSlot == null) return false;
 
-            if (newSlot.ContainsItem)
-            {
-                Debug.LogError("Couldn't transfer item: New ItemSlot already has item");
-                return false;
-            }
+            if (newSlot.ContainsItem) return false;
 
             newSlot.SetCurrentHeldItem(CurrentHeldItem);
             CurrentHeldItem = null;
