@@ -411,6 +411,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   m_SlotPoint: {fileID: 4927853171217970471}
+  m_LevelItems: {fileID: 11400000, guid: 1e1123fb26cec73409ba521cd96bb0fd, type: 2}
 --- !u!1 &7556814107851261555
 GameObject:
   m_ObjectHideFlags: 0

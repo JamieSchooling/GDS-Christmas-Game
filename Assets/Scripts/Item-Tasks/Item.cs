@@ -8,10 +8,12 @@ namespace GDS
         [SerializeField] private SpriteRenderer m_SpriteRenderer;
         [SerializeField] private LevelItems m_LevelItems;
 
+        public ItemData Data { get; private set; }
+
         [Rpc(SendTo.ClientsAndHost, InvokePermission = RpcInvokePermission.Server)]
         public void SetDataRpc(int itemDataIndex, ItemType type)
         {
-            ItemData data = type switch
+            Data = type switch
             {
                 ItemType.BaseComponent => m_LevelItems.BaseComponents[itemDataIndex],
                 ItemType.CraftableComponent => m_LevelItems.CraftableComponents[itemDataIndex],
@@ -19,7 +21,7 @@ namespace GDS
                 _ => throw new System.NotImplementedException(),
             };
 
-            m_SpriteRenderer.sprite = data.Sprite;
+            m_SpriteRenderer.sprite = Data.Sprite;
         }
 
         public void SetOwnerSlot(ItemSlot ownerSlot)

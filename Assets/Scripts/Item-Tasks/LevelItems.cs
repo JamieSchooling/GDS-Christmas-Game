@@ -31,6 +31,40 @@ namespace GDS
             }
         }
 
+        public bool TryCraft(ItemData first, ItemData second, out ItemData craftResult)
+        {
+            craftResult = null;
+
+            if (first.ItemType is ItemType.Toy || second.ItemType is ItemType.Toy)
+                return false;
+
+            if (first.ItemType is ItemType.BaseComponent || second.ItemType is ItemType.BaseComponent)
+                return CheckRecipes(m_CraftableComponents, first, second, out craftResult);
+
+            return CheckRecipes(m_Toys, first, second, out craftResult);
+        }
+
+        private bool CheckRecipes(ItemData[] itemsToCheck, ItemData first, ItemData second, out ItemData result)
+        {
+            result = null;
+            foreach (ItemData item in itemsToCheck)
+            {
+                List<ItemData> components = new(item.Components);
+                foreach (ItemData component in item.Components)
+                {
+                    if (component == first || component == second)
+                        components.Remove(component);
+                }
+                if (components.Count == 0)
+                {
+                    result = item;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         private void OnValidate()
         {
             bool containedInvalid = false;

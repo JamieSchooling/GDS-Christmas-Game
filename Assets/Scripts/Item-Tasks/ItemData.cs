@@ -84,9 +84,10 @@ namespace GDS
                 m_ItemTypeProp.enumValueIndex == (int)ItemType.Toy)
             {
                 EditorGUILayout.PropertyField(m_ComponentsProp, true);
+                if (m_ComponentsProp.arraySize <= 2)
+                    serializedObject.ApplyModifiedProperties();
             }
 
-            serializedObject.ApplyModifiedProperties();
         }
     }
 #endif
