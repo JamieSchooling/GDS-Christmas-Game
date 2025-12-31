@@ -456,7 +456,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  m_InteractRadius: 1.5
+  m_InteractRange: 1
+  m_InteractLocalOrigin: {x: 0, y: 0.5}
+  m_InteractDirectionalRangeMultiplier: {x: 0.6, y: 1}
   m_InteractableLayers:
     serializedVersion: 2
     m_Bits: 55

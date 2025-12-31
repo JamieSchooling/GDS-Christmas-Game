@@ -103,7 +103,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 340532749
+  GlobalObjectIdHash: 3273601539
   InScenePlacedSourceGlobalObjectIdHash: 3273601539
   DeferredDespawnTick: 0
   Ownership: 1
@@ -158,6 +158,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   m_ItemPrefab: {fileID: 545024349514793293, guid: e53a67baf8d2f1f4498cdc64541690a5, type: 3}
+  m_LevelItems: {fileID: 0}
+  m_ComponentData: {fileID: 0}
 --- !u!61 &6209997567753753589
 BoxCollider2D:
   m_ObjectHideFlags: 0
