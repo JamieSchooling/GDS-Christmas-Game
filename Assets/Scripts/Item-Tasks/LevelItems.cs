@@ -9,26 +9,25 @@ namespace GDS
     public class LevelItems : ScriptableObject
     {
         [SerializeField] private ItemData[] m_BaseComponents;
+        [SerializeField] private ItemData[] m_ConvertibleComponents;
         [SerializeField] private ItemData[] m_CraftableComponents;
         [SerializeField] private ItemData[] m_Toys;
 
         public ItemData[] BaseComponents => m_BaseComponents;
+        public ItemData[] ConvertibleComponents => m_ConvertibleComponents;
         public ItemData[] CraftableComponents => m_CraftableComponents;
         public ItemData[] Toys => m_Toys;
         
         public int IndexOf(ItemData itemData)
         {
-            switch (itemData.ItemType)
+            return itemData.ItemType switch
             {
-                case ItemType.BaseComponent:
-                    return m_BaseComponents.ToList().IndexOf(itemData);
-                case ItemType.CraftableComponent:
-                    return m_CraftableComponents.ToList().IndexOf(itemData);
-                case ItemType.Toy:
-                    return m_Toys.ToList().IndexOf(itemData);
-                default:
-                    return -1;
-            }
+                ItemType.BaseComponent => m_BaseComponents.ToList().IndexOf(itemData),
+                ItemType.ConvertibleComponent => m_ConvertibleComponents.ToList().IndexOf(itemData),
+                ItemType.CraftableComponent => m_CraftableComponents.ToList().IndexOf(itemData),
+                ItemType.Toy => m_Toys.ToList().IndexOf(itemData),
+                _ => throw new System.NotImplementedException("Unknown ItemType provided when getting ItemData index."),
+            };
         }
 
         public bool TryCraft(ItemData first, ItemData second, out ItemData craftResult)
@@ -74,6 +73,16 @@ namespace GDS
                 if (m_BaseComponents[i].ItemType != ItemType.BaseComponent)
                 {
                     m_BaseComponents[i] = null;
+                    containedInvalid = true;
+                }
+            }
+
+            for (int i = 0; i < m_ConvertibleComponents.Length; ++i)
+            {
+                if (m_ConvertibleComponents[i] == null) continue;
+                if (m_ConvertibleComponents[i].ItemType != ItemType.ConvertibleComponent)
+                {
+                    m_ConvertibleComponents[i] = null;
                     containedInvalid = true;
                 }
             }

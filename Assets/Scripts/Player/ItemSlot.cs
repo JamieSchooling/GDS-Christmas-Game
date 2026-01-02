@@ -11,6 +11,7 @@ namespace GDS
         public Item CurrentHeldItem { get; private set; } = null;
         public bool ContainsItem => CurrentHeldItem != null;
         public Vector2 Position => m_SlotPoint.position;
+        public LevelItems LevelItems => m_LevelItems;
 
         public void SetCurrentHeldItem(Item item)
         {

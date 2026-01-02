@@ -17,6 +17,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 13b6c94cffe147c40bef92628668cfbc, type: 2}
   - {fileID: 11400000, guid: 33e189e5a177eb741bb0e8ae34afd9eb, type: 2}
   - {fileID: 11400000, guid: af55795f88580b94aae52d4614692f50, type: 2}
+  m_ConvertibleComponents:
+  - {fileID: 11400000, guid: 05a3a7e10cef12846ac46681b5f4d972, type: 2}
   m_CraftableComponents:
   - {fileID: 11400000, guid: 996a17be08d502544acdfa26438437b6, type: 2}
   - {fileID: 11400000, guid: 368e82089dacb2c4c90b3a377efed9d3, type: 2}

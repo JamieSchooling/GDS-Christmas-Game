@@ -10,12 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 83ef293c20373b04aa8649f8c66d97e5, type: 3}
-  m_Name: Craftable 1 2
+  m_Name: Convertible
   m_EditorClassIdentifier: 
-  m_Sprite: {fileID: 1079267379, guid: 5350d9adbf64cc74da957067e759883e, type: 3}
+  m_Sprite: {fileID: 1815337163, guid: 5350d9adbf64cc74da957067e759883e, type: 3}
   m_ItemName: 
-  m_ItemType: 2
-  m_Components:
-  - {fileID: 11400000, guid: fd3c8d2551cef584fa06a9c8a9cb36a5, type: 2}
-  - {fileID: 11400000, guid: 13b6c94cffe147c40bef92628668cfbc, type: 2}
-  m_ConversionResult: {fileID: 0}
+  m_ItemType: 1
+  m_Components: []
+  m_ConversionResult: {fileID: 11400000, guid: fd3c8d2551cef584fa06a9c8a9cb36a5, type: 2}

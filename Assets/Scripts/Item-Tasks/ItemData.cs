@@ -1,8 +1,6 @@
 using UnityEngine;
-using UnityEngine.UIElements;
-using System.Collections.Generic;
-
-
+using System;
+using System.Runtime.Serialization;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -12,6 +10,7 @@ namespace GDS
     public enum ItemType
     {
         BaseComponent,
+        ConvertibleComponent,
         CraftableComponent,
         Toy
     }
@@ -25,21 +24,23 @@ namespace GDS
 
         // Hidden in inspector to allow for custom editor to draw
         [SerializeField, HideInInspector] private ItemData[] m_Components;
+        [SerializeField, HideInInspector] private ItemData m_ConversionResult;
 
         public string Name => m_ItemName;
         public Sprite Sprite => m_Sprite;
         public ItemType ItemType => m_ItemType;
-        public ItemData[] Components => m_ItemType != ItemType.BaseComponent ? m_Components : null;
+        public ItemData[] Components => m_ItemType is ItemType.CraftableComponent or ItemType.Toy ? m_Components : null;
+        public ItemData ConversionResult => m_ItemType is ItemType.ConvertibleComponent ? m_ConversionResult : null;
 
         private void OnValidate()
         {
-            if (m_ItemType != ItemType.BaseComponent)
+            if (m_ItemType is ItemType.CraftableComponent or ItemType.Toy && m_Components.Length > 0)
             {
                 bool containedInvalid = false;
                 for (int i = 0; i < m_Components.Length; ++i)
                 {
                     if (m_Components[i] == null) continue;
-                    if (m_ItemType is ItemType.CraftableComponent && m_Components[i].ItemType == ItemType.Toy)
+                    if (m_ItemType is ItemType.CraftableComponent && m_Components[i].ItemType is ItemType.Toy)
                     {
                         m_Components[i] = null;
                         containedInvalid = true;
@@ -60,6 +61,19 @@ namespace GDS
                     );
 #endif
             }
+            else if (m_ItemType is ItemType.ConvertibleComponent &&  m_ConversionResult != null &&
+                m_ConversionResult.ItemType is not ItemType.BaseComponent or ItemType.ConvertibleComponent)
+            {
+                m_ConversionResult = null;
+#if UNITY_EDITOR
+                EditorUtility.DisplayDialog(
+                    "Invalid Conversion Result",
+                    "Conversion result must be either Base Component or Convertible Component",
+                    "Ok"
+                );
+
+#endif
+            }
         }
     }
 
@@ -69,11 +83,13 @@ namespace GDS
     {
         private SerializedProperty m_ItemTypeProp;
         private SerializedProperty m_ComponentsProp;
+        private SerializedProperty m_ConversionResultProp;
 
         private void OnEnable()
         {
             m_ItemTypeProp = serializedObject.FindProperty("m_ItemType");
             m_ComponentsProp = serializedObject.FindProperty("m_Components");
+            m_ConversionResultProp = serializedObject.FindProperty("m_ConversionResult");
         }
 
         public override void OnInspectorGUI()
@@ -86,6 +102,11 @@ namespace GDS
                 EditorGUILayout.PropertyField(m_ComponentsProp, true);
                 if (m_ComponentsProp.arraySize <= 2)
                     serializedObject.ApplyModifiedProperties();
+            }
+            else if (m_ItemTypeProp.enumValueIndex == (int)ItemType.ConvertibleComponent)
+            {
+                EditorGUILayout.PropertyField(m_ConversionResultProp);
+                serializedObject.ApplyModifiedProperties();
             }
 
         }

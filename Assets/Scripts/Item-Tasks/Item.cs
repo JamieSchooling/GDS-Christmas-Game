@@ -10,15 +10,16 @@ namespace GDS
 
         public ItemData Data { get; private set; }
 
-        [Rpc(SendTo.ClientsAndHost, InvokePermission = RpcInvokePermission.Server)]
+        [Rpc(SendTo.ClientsAndHost, InvokePermission = RpcInvokePermission.Everyone)]
         public void SetDataRpc(int itemDataIndex, ItemType type)
         {
             Data = type switch
             {
                 ItemType.BaseComponent => m_LevelItems.BaseComponents[itemDataIndex],
+                ItemType.ConvertibleComponent => m_LevelItems.ConvertibleComponents[itemDataIndex],
                 ItemType.CraftableComponent => m_LevelItems.CraftableComponents[itemDataIndex],
                 ItemType.Toy => m_LevelItems.Toys[itemDataIndex],
-                _ => throw new System.NotImplementedException(),
+                _ => throw new System.NotImplementedException("Unknown ItemType provided in SetDataRpc."),
             };
 
             m_SpriteRenderer.sprite = Data.Sprite;

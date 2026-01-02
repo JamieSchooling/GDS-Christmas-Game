@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Sprite: {fileID: -602152943, guid: 5350d9adbf64cc74da957067e759883e, type: 3}
   m_ItemName: 
-  m_ItemType: 2
+  m_ItemType: 3
   m_Components:
   - {fileID: 11400000, guid: 996a17be08d502544acdfa26438437b6, type: 2}
   - {fileID: 11400000, guid: 368e82089dacb2c4c90b3a377efed9d3, type: 2}
+  m_ConversionResult: {fileID: 0}
