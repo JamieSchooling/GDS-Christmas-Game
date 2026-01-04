@@ -23,6 +23,7 @@ namespace GDS
         [SerializeField] private bool m_HideDisplayOnComplete = true;
 
         [SerializeField, HideInInspector] private Slider m_ProgressBar;
+        [SerializeField, HideInInspector] private bool m_ReverseProgressDirection;
         [SerializeField, HideInInspector] private TextMeshProUGUI m_DisplayText;
         [SerializeField, HideInInspector] private bool m_AlwaysShowMins = false;
 
@@ -37,21 +38,6 @@ namespace GDS
         private void Awake()
         {
             m_Timer = GetComponent<Timer>();
-            switch (m_DisplayType)
-            {
-                case TimerDisplayType.ProgressBar:
-                    InitialiseDisplay = InitialiseProgressBar;
-                    UpdateDisplay = UpdateProgressBar;
-                    m_DisplayObject = m_ProgressBar.gameObject;
-                    break;
-                case TimerDisplayType.Digits:
-                    InitialiseDisplay = InitialiseDigitText;
-                    UpdateDisplay = UpdateDigitText;
-                    m_DisplayObject = m_DisplayText.gameObject;
-                    break;
-                default:
-                    throw new System.NotImplementedException("Given TimerDisplayType not implemented.");
-            }
 
             m_Timer.OnTimerStart.AddListener((duration) =>
             {
@@ -75,6 +61,22 @@ namespace GDS
 
         private void StartDisplay(float duration)
         {
+
+            switch (m_DisplayType)
+            {
+                case TimerDisplayType.ProgressBar:
+                    InitialiseDisplay = InitialiseProgressBar;
+                    UpdateDisplay = UpdateProgressBar;
+                    m_DisplayObject = m_ProgressBar.gameObject;
+                    break;
+                case TimerDisplayType.Digits:
+                    InitialiseDisplay = InitialiseDigitText;
+                    UpdateDisplay = UpdateDigitText;
+                    m_DisplayObject = m_DisplayText.gameObject;
+                    break;
+                default:
+                    throw new System.NotImplementedException("Given TimerDisplayType not implemented.");
+            }
             m_TickCoroutine = StartCoroutine(TickTimerDisplay(duration));
         }
 
@@ -129,7 +131,7 @@ namespace GDS
         {
             float time = duration; 
             m_DisplayObject.SetActive(true);
-            InitialiseDisplay(time);
+            if (!m_Timer.IsStarted) InitialiseDisplay(time);
 
             while (time >= 0.0f)
             {
@@ -146,7 +148,7 @@ namespace GDS
             m_ProgressBar.wholeNumbers = false;
             m_ProgressBar.maxValue = duration;
             m_ProgressBar.minValue = 0.0f;
-            m_ProgressBar.value = duration;
+            m_ProgressBar.value = m_ReverseProgressDirection ? 0 : duration;
         }
 
         private void InitialiseDigitText(float duration)
@@ -160,7 +162,7 @@ namespace GDS
 
         private void UpdateProgressBar(float currentTime)
         {
-            m_ProgressBar.value = currentTime;
+            m_ProgressBar.value = m_ReverseProgressDirection ? m_ProgressBar.maxValue - currentTime : currentTime;
         }
 
         private void UpdateDigitText(float currentTime)
@@ -179,6 +181,7 @@ namespace GDS
     {
         private SerializedProperty m_DisplayTypeProp;
         private SerializedProperty m_ProgressBarProp;
+        private SerializedProperty m_ReverseProgressDirectionProp;
         private SerializedProperty m_DigitTextProp;
         private SerializedProperty m_AlwaysShowMinsProp;
 
@@ -186,6 +189,7 @@ namespace GDS
         {
             m_DisplayTypeProp = serializedObject.FindProperty("m_DisplayType");
             m_ProgressBarProp = serializedObject.FindProperty("m_ProgressBar");
+            m_ReverseProgressDirectionProp = serializedObject.FindProperty("m_ReverseProgressDirection");
             m_DigitTextProp = serializedObject.FindProperty("m_DisplayText");
             m_AlwaysShowMinsProp = serializedObject.FindProperty("m_AlwaysShowMins");
         }
@@ -198,6 +202,7 @@ namespace GDS
             {
                 case TimerDisplayType.ProgressBar:
                     EditorGUILayout.PropertyField(m_ProgressBarProp);
+                    EditorGUILayout.PropertyField(m_ReverseProgressDirectionProp);
                     serializedObject.ApplyModifiedProperties();
                     break;
                 case TimerDisplayType.Digits:

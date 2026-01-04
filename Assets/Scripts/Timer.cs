@@ -37,8 +37,8 @@ namespace GDS
         public void StartTimer()
         {
             m_Duration = m_DefaultDuration;
-            m_IsStarted = true;
             OnTimerStart?.Invoke(m_Duration);
+            m_IsStarted = true;
             m_TimerCoroutine = StartCoroutine(TimerCoroutine(m_Duration));
         }
 

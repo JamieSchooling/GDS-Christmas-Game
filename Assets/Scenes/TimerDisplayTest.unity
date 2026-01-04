@@ -165,9 +165,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  m_DisplayType: 1
+  m_DisplayType: 0
   m_HideDisplayOnComplete: 1
   m_ProgressBar: {fileID: 1368800785}
+  m_ReverseProgressDirection: 0
   m_DisplayText: {fileID: 1659863513}
   m_AlwaysShowMins: 0
 --- !u!114 &38968314
